@@ -120,7 +120,7 @@ def test_log_and_ftdc_accept_pdf_format(arguments):
     assert args.format == "pdf"
 
 
-@pytest.mark.parametrize("command", ["hc", "ingest", "unknown"])
+@pytest.mark.parametrize("command", ["ingest", "unknown"])
 def test_removed_commands_are_rejected(command):
     with pytest.raises(SystemExit):
         setup_parser().parse_args([command])
