@@ -4,7 +4,7 @@ from io import StringIO
 from pyftdc import FTDCError
 from x_ray.utils import load_classes
 
-from x_ray_ftdc.ftdc_items.metadata_review_item import (
+from mongo_x_ray_ftdc.ftdc_items.metadata_review_item import (
     _METADATA_TABS,
     MetadataReviewItem,
     _resolve_path,
@@ -53,7 +53,7 @@ def test_item_skips_analyze_after_first_successful_read(tmp_path, monkeypatch):
             return first_meta if call_count == 1 else second_meta
 
     monkeypatch.setattr(
-        "x_ray_ftdc.ftdc_items.metadata_review_item.FTDCReader",
+        "mongo_x_ray_ftdc.ftdc_items.metadata_review_item.FTDCReader",
         Reader,
     )
     item.analyze(tmp_path / "metrics.2026-01-01T00-00-00Z")
@@ -74,7 +74,7 @@ def test_item_handles_missing_metadata_gracefully(tmp_path, monkeypatch):
             raise FTDCError("no metadata")
 
     monkeypatch.setattr(
-        "x_ray_ftdc.ftdc_items.metadata_review_item.FTDCReader",
+        "mongo_x_ray_ftdc.ftdc_items.metadata_review_item.FTDCReader",
         Reader,
     )
     item.analyze(tmp_path / "metrics.test")
@@ -158,6 +158,6 @@ def test_item_name_returns_class_name():
 
 
 def test_class_is_discovered_by_load_classes():
-    classes = load_classes("x_ray_ftdc.ftdc_items")
+    classes = load_classes("mongo_x_ray_ftdc.ftdc_items")
     assert "MetadataReviewItem" in classes
     assert classes["MetadataReviewItem"] is MetadataReviewItem

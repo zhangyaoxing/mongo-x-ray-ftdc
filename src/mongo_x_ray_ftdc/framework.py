@@ -10,14 +10,14 @@ from bson.errors import InvalidBSON
 from x_ray.framework import BaseFramework
 from x_ray.utils import bold, cyan, green, load_classes, yellow
 
-FTDC_CLASSES = load_classes("x_ray_ftdc.ftdc_items")
+FTDC_CLASSES = load_classes("mongo_x_ray_ftdc.ftdc_items")
 
 
 class Framework(BaseFramework):
     """Load configured FTDC analysis items and coordinate their lifecycle."""
 
     template_module = "ftdc"
-    template_package = "x_ray_ftdc"
+    template_package = "mongo_x_ray_ftdc"
 
     _FILE_TIME = re.compile(r"^metrics\.(?P<timestamp>\d{4}-\d{2}-\d{2}T\d{2}[-:]\d{2}[-:]\d{2}Z)(?:-\d+)?$")
 

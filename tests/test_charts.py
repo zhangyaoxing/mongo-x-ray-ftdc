@@ -3,7 +3,7 @@ from xml.etree import ElementTree
 
 import pytest
 
-from x_ray_ftdc.charts import write_bar_chart
+from mongo_x_ray_ftdc.charts import write_bar_chart
 
 
 def test_bar_chart_defaults_to_png(tmp_path):

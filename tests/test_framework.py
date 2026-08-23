@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
-from x_ray_ftdc.framework import FTDC_CLASSES, Framework
+from mongo_x_ray_ftdc.framework import FTDC_CLASSES, Framework
 
 
 def test_empty_checkset_writes_reports(tmp_path, monkeypatch):

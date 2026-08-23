@@ -5,8 +5,8 @@ from html import escape
 from pathlib import Path
 from typing import Any, Optional
 
-from x_ray_ftdc.charts import DEFAULT_CHART_HEIGHT, DEFAULT_CHART_WIDTH
-from x_ray_ftdc.parsers.base_parser import BaseParser
+from mongo_x_ray_ftdc.charts import DEFAULT_CHART_HEIGHT, DEFAULT_CHART_WIDTH
+from mongo_x_ray_ftdc.parsers.base_parser import BaseParser
 
 
 def _chart_img(

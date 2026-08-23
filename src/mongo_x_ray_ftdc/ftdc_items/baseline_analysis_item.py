@@ -14,16 +14,16 @@ from typing import Literal, Optional, TypedDict
 from pyftdc import FTDCError, FTDCReader
 from x_ray.utils import env, yellow
 
-from x_ray_ftdc.charts import (
+from mongo_x_ray_ftdc.charts import (
     DEFAULT_CHART_HEIGHT,
     DEFAULT_CHART_WIDTH,
     MEMBER_STATE_CHART_HEIGHT,
     MEMBER_STATE_CHART_WIDTH,
     write_bar_chart,
 )
-from x_ray_ftdc.ftdc_items.base_item import BaseItem
-from x_ray_ftdc.parsers.baseline_analysis_parser import BaselineAnalysisParser
-from x_ray_ftdc.shared import (
+from mongo_x_ray_ftdc.ftdc_items.base_item import BaseItem
+from mongo_x_ray_ftdc.parsers.baseline_analysis_parser import BaselineAnalysisParser
+from mongo_x_ray_ftdc.shared import (
     BASELINE_ANALYSIS_STATIC_METRICS,
     CPU_METRICS,
     DERIVED_METRIC_NAMES,

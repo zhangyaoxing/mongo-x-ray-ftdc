@@ -1,6 +1,6 @@
 import base64
 
-from x_ray_ftdc.parsers.baseline_analysis_parser import BaselineAnalysisParser, _chart_img
+from mongo_x_ray_ftdc.parsers.baseline_analysis_parser import BaselineAnalysisParser, _chart_img
 
 
 def test_parse_baseline_analysis_table():

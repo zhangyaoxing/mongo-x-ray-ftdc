@@ -11,14 +11,14 @@ requires-python = ">=3.10,<4"
 dependencies = ["mongo-x-ray>=1.5.1"]
 
 [project.entry-points."x_ray.plugins"]
-ftdc = "x_ray_ftdc.plugin:FtdcPlugin"
+ftdc = "mongo_x_ray_ftdc.plugin:FtdcPlugin"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["x_ray_ftdc*"]
+include = ["mongo_x_ray_ftdc*"]
 
 [tool.setuptools.package-data]
-"x_ray_ftdc" = ["templates/**/*"]
+"mongo_x_ray_ftdc" = ["templates/**/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

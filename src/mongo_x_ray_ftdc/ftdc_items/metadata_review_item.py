@@ -7,7 +7,7 @@ from typing import Any, Optional
 
 from pyftdc import FTDCError, FTDCReader
 
-from x_ray_ftdc.ftdc_items.base_item import BaseItem
+from mongo_x_ray_ftdc.ftdc_items.base_item import BaseItem
 
 _METADATA_TABS: list[tuple[str, str, str]] = [
     ("mongodb-config", "MongoDB Configuration", "getCmdLineOpts.parsed"),

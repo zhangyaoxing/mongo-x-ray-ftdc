@@ -5,12 +5,12 @@ from xml.etree import ElementTree
 import pytest
 from pyftdc import DataPoint
 
-from x_ray_ftdc.ftdc_items.baseline_analysis_item import (
+from mongo_x_ray_ftdc.ftdc_items.baseline_analysis_item import (
     MEMBER_STATE_COLORS,
     BaselineAnalysisItem,
     _downsample_points,
 )
-from x_ray_ftdc.shared import (
+from mongo_x_ray_ftdc.shared import (
     BASELINE_ANALYSIS_STATIC_METRICS,
     CPU_METRICS,
     DERIVED_METRIC_NAMES,
@@ -119,7 +119,7 @@ def test_baseline_analysis_passes_metric_specific_thresholds_to_charts(tmp_path,
         return f"charts/{slug or metric}.svg"
 
     monkeypatch.setattr(
-        "x_ray_ftdc.ftdc_items.baseline_analysis_item.write_bar_chart",
+        "mongo_x_ray_ftdc.ftdc_items.baseline_analysis_item.write_bar_chart",
         write_chart,
     )
 
@@ -182,7 +182,7 @@ def test_analyze_uses_batched_pyftdc_api_and_discovers_devices(tmp_path, monkeyp
             return {name: [DataPoint(timestamp=timestamp, value=10)] for name in names}
 
     monkeypatch.setattr(
-        "x_ray_ftdc.ftdc_items.baseline_analysis_item.FTDCReader",
+        "mongo_x_ray_ftdc.ftdc_items.baseline_analysis_item.FTDCReader",
         Reader,
     )
     item = BaselineAnalysisItem(str(tmp_path), {"sample_rate": 0.5})
