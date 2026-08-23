@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mongo-x-ray-ftdc"
-version = "1.5.2"
+version = "2.0.0"
 description = "FTDC analysis plugin for x-ray"
 readme = "README.md"
 requires-python = ">=3.10,<4"
-dependencies = ["mongo-x-ray>=1.5.1"]
+dependencies = ["mongo-x-ray>=2.0.0"]
 
 [project.entry-points."mongo_x_ray.plugins"]
 ftdc = "mongo_x_ray_ftdc.plugin:FtdcPlugin"
