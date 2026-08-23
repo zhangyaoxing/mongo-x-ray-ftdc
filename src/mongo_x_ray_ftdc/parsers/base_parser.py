@@ -2,7 +2,7 @@
 
 import os
 
-from x_ray.parsers.base_parser import BaseParser as HCBaseParser
+from mongo_x_ray.parsers.base_parser import BaseParser as HCBaseParser
 
 
 class BaseParser(HCBaseParser):

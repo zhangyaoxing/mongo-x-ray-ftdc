@@ -7,8 +7,8 @@ from typing import Optional, TextIO
 
 from bson import decode_file_iter
 from bson.errors import InvalidBSON
-from x_ray.framework import BaseFramework
-from x_ray.utils import bold, cyan, green, load_classes, yellow
+from mongo_x_ray.framework import BaseFramework
+from mongo_x_ray.utils import bold, cyan, green, load_classes, yellow
 
 FTDC_CLASSES = load_classes("mongo_x_ray_ftdc.ftdc_items")
 

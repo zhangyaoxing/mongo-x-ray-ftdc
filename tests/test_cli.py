@@ -3,9 +3,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
-from x_ray.__main__ import setup_parser
-from x_ray.plugin import discover_paths
-from x_ray.plugins import discover_plugins
+from mongo_x_ray.__main__ import setup_parser
+from mongo_x_ray.plugin import discover_paths
+from mongo_x_ray.plugins import discover_plugins
 
 
 def test_ftdc_accepts_optional_utc_range():

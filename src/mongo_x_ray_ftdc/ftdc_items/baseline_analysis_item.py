@@ -11,8 +11,8 @@ from posixpath import normpath
 from statistics import fmean
 from typing import Literal, Optional, TypedDict
 
+from mongo_x_ray.utils import env, yellow
 from pyftdc import FTDCError, FTDCReader
-from x_ray.utils import env, yellow
 
 from mongo_x_ray_ftdc.charts import (
     DEFAULT_CHART_HEIGHT,
@@ -499,7 +499,10 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
             self._logger.info("AI analysis skipped in development mode")
             return
         try:
-            from x_ray.ai_client import _get_client, analyze_ftdc_section  # pylint: disable=import-outside-toplevel
+            from mongo_x_ray.ai_client import (  # pylint: disable=import-outside-toplevel
+                _get_client,
+                analyze_ftdc_section,
+            )
         except ImportError:
             return
 
@@ -528,7 +531,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
         all_metrics = self._collect_all_section_data()
         if all_metrics:
             try:
-                from x_ray.ai_client import analyze_ftdc_overview  # pylint: disable=import-outside-toplevel
+                from mongo_x_ray.ai_client import analyze_ftdc_overview  # pylint: disable=import-outside-toplevel
             except ImportError:
                 pass
             else:
