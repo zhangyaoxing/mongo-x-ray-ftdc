@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 class FtdcPlugin(Plugin):
     name = "ftdc"
+    distribution = "mongo-x-ray-ftdc"
     help = "Analyze MongoDB FTDC files"
     description = """
 Analyze MongoDB Full Time Diagnostic Data Capture (FTDC) files.
