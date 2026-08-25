@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-from mongo_x_ray.ai_client import _build_section_prompt, analyze_ftdc_overview, analyze_ftdc_section
+from mongo_x_ray_ftdc.ai import _build_section_prompt, analyze_ftdc_overview, analyze_ftdc_section
 
 
 def test_analyze_ftdc_section_returns_none_when_no_api_key(monkeypatch):
@@ -20,7 +20,7 @@ def test_analyze_ftdc_section_calls_openai_with_correct_prompt():
     mock_response.choices[0].message.content = "Analysis result"
     mock_client.chat.completions.create.return_value = mock_response
 
-    with patch("mongo_x_ray.ai_client._get_client", return_value=(mock_client, "gpt-4o")):
+    with patch("mongo_x_ray.ai_client.get_client", return_value=(mock_client, "gpt-4o")):
         metrics = [
             {
                 "metric": "query ops/s",
@@ -58,7 +58,7 @@ def test_analyze_ftdc_section_respects_custom_model():
     mock_response.choices[0].message.content = "ok"
     mock_client.chat.completions.create.return_value = mock_response
 
-    with patch("mongo_x_ray.ai_client._get_client", return_value=(mock_client, "custom-model")):
+    with patch("mongo_x_ray.ai_client.get_client", return_value=(mock_client, "custom-model")):
         analyze_ftdc_section("1.2 Ops and Latencies", [])
 
     assert mock_client.chat.completions.create.call_args.kwargs["model"] == "custom-model"
@@ -68,7 +68,7 @@ def test_analyze_ftdc_section_returns_none_on_api_error():
     mock_client = MagicMock()
     mock_client.chat.completions.create.side_effect = RuntimeError("API down")
 
-    with patch("mongo_x_ray.ai_client._get_client", return_value=(mock_client, "gpt-4o")):
+    with patch("mongo_x_ray.ai_client.get_client", return_value=(mock_client, "gpt-4o")):
         result = analyze_ftdc_section("1.1 Workload", [{"metric": "test", "values": [1.0]}])
 
     assert result is None
@@ -102,7 +102,7 @@ def test_analyze_ftdc_overview_calls_openai_with_all_metrics():
     mock_response.choices[0].message.content = "Workload and latency are correlated."
     mock_client.chat.completions.create.return_value = mock_response
 
-    with patch("mongo_x_ray.ai_client._get_client", return_value=(mock_client, "gpt-4o")):
+    with patch("mongo_x_ray.ai_client.get_client", return_value=(mock_client, "gpt-4o")):
         metrics = [
             {"metric": "query ops/s", "unit": "ops/s", "peak": 100.0, "average": 50.0, "values": [1, 2]},
             {"metric": "reads latency", "unit": "ms/op", "peak": 5.0, "average": 2.0, "values": [0.5, 1.0]},

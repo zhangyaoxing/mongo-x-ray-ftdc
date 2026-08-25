@@ -500,14 +500,13 @@ class BaselineAnalysisItem(BaseItem):
             self._logger.info("AI analysis skipped in development mode")
             return
         try:
-            from mongo_x_ray.ai_client import (
-                _get_client,
-                analyze_ftdc_section,
-            )
+            from mongo_x_ray.ai_client import get_client
+
+            from mongo_x_ray_ftdc.ai import analyze_ftdc_section
         except ImportError:
             return
 
-        client, _ = _get_client()
+        client, _ = get_client()
         if client is None:
             return
 
@@ -532,7 +531,7 @@ class BaselineAnalysisItem(BaseItem):
         all_metrics = self._collect_all_section_data()
         if all_metrics:
             try:
-                from mongo_x_ray.ai_client import analyze_ftdc_overview
+                from mongo_x_ray_ftdc.ai import analyze_ftdc_overview
             except ImportError:
                 pass
             else:
