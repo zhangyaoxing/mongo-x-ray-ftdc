@@ -18,6 +18,26 @@ x-ray ftdc /var/lib/mongo/diagnostic.data 2026-06-17T08:00:00Z 2026-06-17T10:00:
 x-ray ftdc --discover /data/
 ```
 
+## Parameters
+
+```bash
+x-ray ftdc [-h] [-s CHECKSET] [-o OUTPUT] [-f {markdown,html,pdf}] [--no-browser]
+           [--svg] [-r RATE] [--discover] ftdc_path [start_time] [end_time]
+```
+
+| Argument | Description | Default |
+| --- | --- | --- |
+| `ftdc_path` | Path to a directory containing FTDC files. | required |
+| `start_time` | Inclusive UTC start time in ISO-8601 format. | first data point |
+| `end_time` | Inclusive UTC end time in ISO-8601 format. | last data point |
+| `-s, --checkset` | Checkset to run. | `default` |
+| `-o, --output` | Output folder path. | `output/` |
+| `-f, --format` | Output format: `markdown`, `html` or `pdf` (PDF also keeps Markdown and HTML). | `html` |
+| `--no-browser` | Do not open the generated report in the browser. | `false` |
+| `--svg` | Reference SVG charts in the report instead of converting them to PNG. | `false` |
+| `-r, --rate` | FTDC sampling rate (0-1). | `1 / number of ingested files` |
+| `--discover` | Recursively search the given path for folders containing FTDC files. | `false` |
+
 ## Development
 
 Requires Python 3.10+ and the [mongo-x-ray](https://github.com/mongodb-ps/ce-mongo-x-ray) core package.
