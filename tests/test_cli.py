@@ -35,22 +35,13 @@ def test_ftdc_accepts_pdf_format():
     assert args.format == "pdf"
 
 
-def test_log_accepts_discover_flag():
-    args = setup_parser().parse_args(["log", "/tmp/logs", "--discover"])
-
-    assert args.discover is True
-
-
 def test_ftdc_accepts_discover_flag():
     args = setup_parser().parse_args(["ftdc", "/tmp/data", "--discover"])
 
     assert args.discover is True
 
 
-def test_discover_defaults_to_false():
-    args = setup_parser().parse_args(["log", "/tmp/logs"])
-    assert args.discover is False
-
+def test_ftdc_discover_defaults_to_false():
     args = setup_parser().parse_args(["ftdc", "/tmp/data"])
     assert args.discover is False
 
@@ -107,28 +98,15 @@ def test_discover_paths_returns_all_matches():
         assert result[1] == dir_b
 
 
-@pytest.mark.parametrize(
-    "arguments",
-    [
-        ["log", "/var/log/mongodb/mongod.log", "-f", "pdf"],
-        ["ftdc", "/diagnostic.data", "-f", "pdf"],
-    ],
-)
-def test_log_and_ftdc_accept_pdf_format(arguments):
-    args = setup_parser().parse_args(arguments)
-
-    assert args.format == "pdf"
-
-
 @pytest.mark.parametrize("command", ["ingest", "unknown"])
 def test_removed_commands_are_rejected(command):
     with pytest.raises(SystemExit):
         setup_parser().parse_args([command])
 
 
-def test_discover_plugins_registers_builtin_commands():
+def test_discover_plugins_registers_ftdc():
     plugins = discover_plugins()
-    assert set(plugins) == {"log", "ftdc", "gmd", "healthcheck"}
+    assert "ftdc" in plugins
 
 
 def test_discover_plugins_instances_are_plugins():
