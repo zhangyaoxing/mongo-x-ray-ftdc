@@ -38,6 +38,13 @@ x-ray ftdc [-h] [-s CHECKSET] [-o OUTPUT] [-f {markdown,html,pdf}] [--no-browser
 | `-r, --rate` | FTDC sampling rate (0-1). | `1 / number of ingested files` |
 | `--discover` | Recursively search the given path for folders containing FTDC files. | `false` |
 
+## Analysis Items
+
+| Item | Purpose |
+| --- | --- |
+| `BaselineAnalysisItem` | Summarize the workload and performance of an FTDC capture: Workload, Ops and Latencies and Performance sections with charts, plus an optional AI-generated summary per section. |
+| `MetadataReviewItem` | Display all FTDC metadata in tabbed code blocks for review. |
+
 ## Development
 
 Requires Python 3.10+ and the [mongo-x-ray](https://github.com/mongodb-ps/ce-mongo-x-ray) core package.
