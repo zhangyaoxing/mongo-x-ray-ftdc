@@ -11,7 +11,6 @@ from mongo_x_ray_ftdc.ftdc_items.metadata_review_item import (
 )
 
 # White-box tests assert on the item's private _raw_metadata state by design.
-# pylint: disable=protected-access
 
 
 def test_resolve_path_extracts_nested_value():

@@ -159,7 +159,7 @@ def _draw_png(
     chart_type: Literal["bar", "line"],
     scale: int = 2,
 ) -> None:
-    from PIL import Image, ImageDraw, ImageFont  # pylint: disable=import-outside-toplevel
+    from PIL import Image, ImageDraw, ImageFont
 
     left = _LEFT * scale
     right = _RIGHT * scale

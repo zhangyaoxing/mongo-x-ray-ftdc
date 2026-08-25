@@ -32,7 +32,6 @@ from mongo_x_ray_ftdc.shared import (
 # (_series, _results, _sample_rate, ...) that the class keeps only for its own
 # analysis, and the write_chart mock must mirror write_bar_chart's keyword
 # signature even for parameters this exercise does not use.
-# pylint: disable=protected-access,unused-argument
 
 
 def test_legacy_overview_static_metrics_alias():

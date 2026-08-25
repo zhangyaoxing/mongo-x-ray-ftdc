@@ -155,13 +155,13 @@ class Framework(BaseFramework):
             for item in self._items:
                 try:
                     item.analyze(file_path)
-                except Exception as exc:  # pylint: disable=broad-exception-caught
+                except Exception as exc:
                     self._logger.warning(yellow(f"FTDC item '{item.name}' failed for '{file_path}': {exc}"))
 
         for item in self._items:
             try:
                 item.finalize_analysis()
-            except Exception as exc:  # pylint: disable=broad-exception-caught
+            except Exception as exc:
                 self._logger.warning(yellow(f"FTDC item '{item.name}' finalization failed: {exc}"))
 
     def _render_markdown(self, output: TextIO) -> None:
@@ -174,5 +174,5 @@ class Framework(BaseFramework):
         for section_number, item in enumerate(self._items, start=1):
             try:
                 item.review_results_markdown(output, section_number)
-            except Exception as exc:  # pylint: disable=broad-exception-caught
+            except Exception as exc:
                 self._logger.warning(yellow(f"Failed to render FTDC item '{item.name}': {exc}"))

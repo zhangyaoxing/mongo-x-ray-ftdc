@@ -95,7 +95,7 @@ class _ChartResult(TypedDict):
     downsampled_values: list[float]
 
 
-class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attributes
+class BaselineAnalysisItem(BaseItem):
     """Summarize the workload and performance represented by an FTDC capture."""
 
     def __init__(self, output_folder: str, config: dict, **kwargs) -> None:
@@ -500,7 +500,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
             self._logger.info("AI analysis skipped in development mode")
             return
         try:
-            from mongo_x_ray.ai_client import (  # pylint: disable=import-outside-toplevel
+            from mongo_x_ray.ai_client import (
                 _get_client,
                 analyze_ftdc_section,
             )
@@ -532,7 +532,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
         all_metrics = self._collect_all_section_data()
         if all_metrics:
             try:
-                from mongo_x_ray.ai_client import analyze_ftdc_overview  # pylint: disable=import-outside-toplevel
+                from mongo_x_ray.ai_client import analyze_ftdc_overview
             except ImportError:
                 pass
             else:
