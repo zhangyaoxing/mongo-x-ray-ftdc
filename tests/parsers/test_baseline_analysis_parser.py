@@ -125,7 +125,7 @@ def test_chart_img_embeds_png_as_base64_when_output_folder_provided(tmp_path):
     result = _chart_img("charts/test.png", "Test alt", output_folder=str(tmp_path))
 
     expected_data = base64.b64encode(bytes(range(256))).decode("ascii")
-    assert result == (f'<img src="data:image/png;base64,{expected_data}"' ' width="500" height="150" alt="Test alt">')
+    assert result == (f'<img src="data:image/png;base64,{expected_data}" width="500" height="150" alt="Test alt">')
 
 
 def test_chart_img_falls_back_to_relative_path_when_png_missing(tmp_path):
@@ -173,7 +173,7 @@ def test_parse_embeds_png_with_output_folder(tmp_path):
 
     expected_data = base64.b64encode(png_data).decode("ascii")
     expected_img = (
-        f'<img src="data:image/png;base64,{expected_data}"' ' width="500" height="150" alt="CPU user bar chart">'
+        f'<img src="data:image/png;base64,{expected_data}" width="500" height="150" alt="CPU user bar chart">'
     )
     assert parsed[0]["rows"][0][3] == expected_img
 

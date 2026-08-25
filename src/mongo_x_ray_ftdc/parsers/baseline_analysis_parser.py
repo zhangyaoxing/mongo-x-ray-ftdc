@@ -24,7 +24,7 @@ def _chart_img(
                 data = resolved.read_bytes()
                 b64 = base64.b64encode(data).decode("ascii")
                 src = f"data:image/png;base64,{b64}"
-        return f'<img src="{src}" width="{width}" height="{height}"' f' alt="{escape(alt)}">'
+        return f'<img src="{src}" width="{width}" height="{height}" alt="{escape(alt)}">'
     return f"![{alt}]({chart_path})"
 
 
@@ -59,7 +59,7 @@ class BaselineAnalysisParser(BaseParser):
                             item["myself"],
                             _chart_img(
                                 item["chart"],
-                                f'{item["metric"]} {item.get("chart_type", "bar")} chart',
+                                f"{item['metric']} {item.get('chart_type', 'bar')} chart",
                                 output_folder,
                                 item.get("chart_width", DEFAULT_CHART_WIDTH),
                                 item.get("chart_height", DEFAULT_CHART_HEIGHT),
@@ -74,15 +74,15 @@ class BaselineAnalysisParser(BaseParser):
         rows = []
         for item in data:
             row = [
-                f'{item["metric"]} ({item["unit"]})',
-                f'{round(item["peak"], 2)} / {round(item["average"], 2)}',
+                f"{item['metric']} ({item['unit']})",
+                f"{round(item['peak'], 2)} / {round(item['average'], 2)}",
             ]
             if show_thresholds:
                 row.append(_thresholds(item))
             row.append(
                 _chart_img(
                     item["chart"],
-                    f'{item["metric"]} {item.get("chart_type", "bar")} chart',
+                    f"{item['metric']} {item.get('chart_type', 'bar')} chart",
                     output_folder,
                     item.get("chart_width", DEFAULT_CHART_WIDTH),
                     item.get("chart_height", DEFAULT_CHART_HEIGHT),

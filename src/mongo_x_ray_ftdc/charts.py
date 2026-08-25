@@ -403,8 +403,7 @@ def write_bar_chart(
                 bar_h = top + plot_height - y
                 bar_class = _bar_class(value, parsed_thresholds, parsed_value_colors)
                 marks += (
-                    f'<rect class="{bar_class}" x="{x:.2f}" y="{y:.2f}" '
-                    f'width="{bar_width:.2f}" height="{bar_h:.2f}"/>'
+                    f'<rect class="{bar_class}" x="{x:.2f}" y="{y:.2f}" width="{bar_width:.2f}" height="{bar_h:.2f}"/>'
                 )
                 if used_labels and value != prev_value:
                     label = used_labels.get(value)
@@ -436,23 +435,21 @@ def write_bar_chart(
     if used_labels:
         for value, _label in used_labels.items():
             y = top + plot_height - (value / scale_max) * plot_height
-            grid += f'<line class="metric-grid" x1="{left}" y1="{y:.2f}" ' f'x2="{width - right}" y2="{y:.2f}"/>'
+            grid += f'<line class="metric-grid" x1="{left}" y1="{y:.2f}" x2="{width - right}" y2="{y:.2f}"/>'
     else:
         for offset in _grid_offsets(plot_height, _Y_GRID_SPACING):
             ratio = offset / plot_height
             y = top + plot_height - offset
-            grid += f'<line class="metric-grid" x1="{left}" y1="{y:.2f}" ' f'x2="{width - right}" y2="{y:.2f}"/>'
+            grid += f'<line class="metric-grid" x1="{left}" y1="{y:.2f}" x2="{width - right}" y2="{y:.2f}"/>'
             label_text = str(round(scale_max * ratio, 2))
-            grid += (
-                f'<text class="metric-y-label" x="{left - 6}" y="{y + 3:.2f}" ' f'text-anchor="end">{label_text}</text>'
-            )
+            grid += f'<text class="metric-y-label" x="{left - 6}" y="{y + 3:.2f}" text-anchor="end">{label_text}</text>'
 
     if start_time is not None:
         for offset in _grid_offsets(plot_width, _X_GRID_SPACING):
             ratio = offset / plot_width
             x = left + offset
             tick_time = start_time + timedelta(seconds=duration * ratio)
-            grid += f'<line class="metric-grid" x1="{x:.2f}" y1="{top}" ' f'x2="{x:.2f}" y2="{top + plot_height}"/>'
+            grid += f'<line class="metric-grid" x1="{x:.2f}" y1="{top}" x2="{x:.2f}" y2="{top + plot_height}"/>'
             grid += (
                 f'<text class="metric-x-label" x="{x:.2f}" y="{top + plot_height + 12}" '
                 f'text-anchor="middle">{tick_time.strftime("%H:%M:%S")}</text>'

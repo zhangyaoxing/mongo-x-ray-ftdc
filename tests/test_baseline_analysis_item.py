@@ -133,14 +133,14 @@ def test_baseline_analysis_passes_metric_specific_thresholds_to_charts(tmp_path,
     assert chart_thresholds[DERIVED_METRIC_NAMES["cache_fill"]] == (80, 95)
     assert chart_thresholds[DERIVED_METRIC_NAMES["cache_dirty"]] == (5, 20)
     assert chart_thresholds[DERIVED_METRIC_NAMES["cache_update_ratio"]] == (2.5, 10)
-    assert chart_thresholds[f'{DISK_METRICS["io_in_progress"].name} (sda)'] == (1, 2)
-    assert chart_thresholds[f'{DERIVED_METRIC_NAMES["disk_utilization"]} (/data)'] == (80, 90)
-    assert chart_thresholds[f'{MOUNT_METRICS["free"].name} (/data)'] is None
-    assert chart_thresholds[f'{MOUNT_METRICS["capacity"].name} (/data)'] is None
+    assert chart_thresholds[f"{DISK_METRICS['io_in_progress'].name} (sda)"] == (1, 2)
+    assert chart_thresholds[f"{DERIVED_METRIC_NAMES['disk_utilization']} (/data)"] == (80, 90)
+    assert chart_thresholds[f"{MOUNT_METRICS['free'].name} (/data)"] is None
+    assert chart_thresholds[f"{MOUNT_METRICS['capacity'].name} (/data)"] is None
     assert OPCOUNTER_METRICS["query"].name not in chart_thresholds
     assert OPCOUNTER_METRICS["query"].name not in chart_types
     assert chart_types[DERIVED_METRIC_NAMES["system_memory_utilization"]] == "line"
-    assert chart_types[f'{MOUNT_METRICS["capacity"].name} (/data)'] == "line"
+    assert chart_types[f"{MOUNT_METRICS['capacity'].name} (/data)"] == "line"
 
 
 def test_analyze_uses_batched_pyftdc_api_and_discovers_devices(tmp_path, monkeypatch):
@@ -365,11 +365,11 @@ def test_baseline_analysis_calculates_requested_sections(tmp_path):
     assert performance_metrics.index(DERIVED_METRIC_NAMES["cache_update_ratio"]) == (
         performance_metrics.index(DERIVED_METRIC_NAMES["cache_dirty"]) + 1
     )
-    assert performance[f'{DISK_METRICS["io_in_progress"].name} (sda)']["average"] == 3
-    assert performance[f'{DISK_METRICS["io_in_progress"].name} (sdb)']["average"] == 2
+    assert performance[f"{DISK_METRICS['io_in_progress'].name} (sda)"]["average"] == 3
+    assert performance[f"{DISK_METRICS['io_in_progress'].name} (sdb)"]["average"] == 2
     member_states = {result["metric"]: result for result in item._results["Member State"]}
-    local_state = member_states[f'{REPL_SET_MEMBER_METRICS["state"].name} (0)']
-    remote_state = member_states[f'{REPL_SET_MEMBER_METRICS["state"].name} (1)']
+    local_state = member_states[f"{REPL_SET_MEMBER_METRICS['state'].name} (0)"]
+    remote_state = member_states[f"{REPL_SET_MEMBER_METRICS['state'].name} (1)"]
     assert local_state["member"] == "0"
     assert local_state["myself"] == "Yes"
     assert remote_state["myself"] == "No"
@@ -379,17 +379,17 @@ def test_baseline_analysis_calculates_requested_sections(tmp_path):
     assert "peak" not in local_state
     assert "average" not in local_state
     assert remote_state["chart"] == "charts/ftdc-baseline-analysis-rs-member-state-1.svg"
-    assert f'{MOUNT_METRICS["free"].name} (/)' not in performance
-    assert f'{MOUNT_METRICS["capacity"].name} (/)' not in performance
-    assert performance[f'{MOUNT_METRICS["capacity"].name} (/data/db)']["peak"] == 8
-    assert f'{DERIVED_METRIC_NAMES["disk_utilization"]} (/)' not in performance
-    assert performance[f'{DERIVED_METRIC_NAMES["disk_utilization"]} (/data/db)']["peak"] == 75
+    assert f"{MOUNT_METRICS['free'].name} (/)" not in performance
+    assert f"{MOUNT_METRICS['capacity'].name} (/)" not in performance
+    assert performance[f"{MOUNT_METRICS['capacity'].name} (/data/db)"]["peak"] == 8
+    assert f"{DERIVED_METRIC_NAMES['disk_utilization']} (/)" not in performance
+    assert performance[f"{DERIVED_METRIC_NAMES['disk_utilization']} (/data/db)"]["peak"] == 75
     assert (
-        performance[f'{MOUNT_METRICS["free"].name} (/data/db)']["chart"]
+        performance[f"{MOUNT_METRICS['free'].name} (/data/db)"]["chart"]
         == "charts/ftdc-baseline-analysis-disk-free-data-db.svg"
     )
     assert (
-        performance[f'{MOUNT_METRICS["capacity"].name} (/data/db)']["chart"]
+        performance[f"{MOUNT_METRICS['capacity'].name} (/data/db)"]["chart"]
         == "charts/ftdc-baseline-analysis-disk-capacity-data-db.svg"
     )
 
@@ -668,10 +668,10 @@ def test_mongos_excludes_cache_and_disk_metrics_from_performance(tmp_path):
     assert DERIVED_METRIC_NAMES["cache_fill"] not in performance_metrics
     assert DERIVED_METRIC_NAMES["cache_dirty"] not in performance_metrics
     assert DERIVED_METRIC_NAMES["cache_update_ratio"] not in performance_metrics
-    assert f'{DISK_METRICS["io_in_progress"].name} (sda)' not in performance_metrics
-    assert f'{DISK_METRICS["io_in_progress"].name} (sdb)' not in performance_metrics
-    assert f'{MOUNT_METRICS["free"].name} (/data/db)' not in performance_metrics
-    assert f'{MOUNT_METRICS["capacity"].name} (/data/db)' not in performance_metrics
+    assert f"{DISK_METRICS['io_in_progress'].name} (sda)" not in performance_metrics
+    assert f"{DISK_METRICS['io_in_progress'].name} (sdb)" not in performance_metrics
+    assert f"{MOUNT_METRICS['free'].name} (/data/db)" not in performance_metrics
+    assert f"{MOUNT_METRICS['capacity'].name} (/data/db)" not in performance_metrics
 
     # Still included for mongos
     assert DERIVED_METRIC_NAMES["system_memory_utilization"] in performance_metrics
@@ -729,9 +729,9 @@ def test_csrs_excludes_cache_and_disk_metrics_from_performance(tmp_path):
     assert DERIVED_METRIC_NAMES["cache_fill"] not in performance_metrics
     assert DERIVED_METRIC_NAMES["cache_dirty"] not in performance_metrics
     assert DERIVED_METRIC_NAMES["cache_update_ratio"] not in performance_metrics
-    assert f'{DISK_METRICS["io_in_progress"].name} (sda)' not in performance_metrics
-    assert f'{MOUNT_METRICS["free"].name} (/data/db)' not in performance_metrics
-    assert f'{MOUNT_METRICS["capacity"].name} (/data/db)' not in performance_metrics
+    assert f"{DISK_METRICS['io_in_progress'].name} (sda)" not in performance_metrics
+    assert f"{MOUNT_METRICS['free'].name} (/data/db)" not in performance_metrics
+    assert f"{MOUNT_METRICS['capacity'].name} (/data/db)" not in performance_metrics
 
     assert DERIVED_METRIC_NAMES["system_memory_utilization"] in performance_metrics
     assert CPU_METRICS["user"].name in performance_metrics

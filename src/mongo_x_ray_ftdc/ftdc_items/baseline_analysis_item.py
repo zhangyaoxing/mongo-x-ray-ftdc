@@ -180,7 +180,8 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
         except KeyError as exc:
             self._logger.debug(
                 "Metric not found in FTDC file %s: %s (file may be from a different node type)",
-                file_path, exc,
+                file_path,
+                exc,
             )
             return
         for metric, points in series.items():
@@ -194,7 +195,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
 
     @staticmethod
     def _block_device(metric: str) -> Optional[str]:
-        suffix = f'.{DISK_METRICS["io_queued_ms"].key}'
+        suffix = f".{DISK_METRICS['io_queued_ms'].key}"
         if metric.startswith(DISK_METRIC_PREFIX) and metric.endswith(suffix):
             return metric[len(DISK_METRIC_PREFIX) : -len(suffix)]
         return None
@@ -371,7 +372,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
             points = [(timestamp, value / 1000) for timestamp, value in self._counter_rate(metric)]
             performance.append(
                 self._performance_summary(
-                    f'{DISK_METRICS["io_in_progress"].name} ({block_device})',
+                    f"{DISK_METRICS['io_in_progress'].name} ({block_device})",
                     points,
                     "requests",
                     slug=f"disk-queue-length-{self._mount_slug(block_device)}",
@@ -390,7 +391,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
                 for timestamp, value in sorted(self._series.get(metric, {}).items())
                 if isfinite(value)
             ]
-            display_metric = f'{REPL_SET_MEMBER_METRICS["state"].name} ({member})'
+            display_metric = f"{REPL_SET_MEMBER_METRICS['state'].name} ({member})"
             member_states.append(
                 {
                     "member": member,
@@ -439,7 +440,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
             used_mount_slugs.add(slug)
             performance.append(
                 self._performance_summary(
-                    f'{MOUNT_METRICS["free"].name} ({display_mount})',
+                    f"{MOUNT_METRICS['free'].name} ({display_mount})",
                     free_points,
                     "GiB",
                     slug=f"disk-free-{slug}",
@@ -447,7 +448,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
             )
             performance.append(
                 self._performance_summary(
-                    f'{MOUNT_METRICS["capacity"].name} ({display_mount})',
+                    f"{MOUNT_METRICS['capacity'].name} ({display_mount})",
                     capacity_points,
                     "GiB",
                     slug=f"disk-capacity-{slug}",
@@ -455,7 +456,7 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
             )
             performance.append(
                 self._performance_summary(
-                    f'{DERIVED_METRIC_NAMES["disk_utilization"]} ({display_mount})',
+                    f"{DERIVED_METRIC_NAMES['disk_utilization']} ({display_mount})",
                     self._ratio(
                         metrics.get("capacity", ""),
                         metrics.get("free", ""),
@@ -554,13 +555,15 @@ class BaselineAnalysisItem(BaseItem):  # pylint: disable=too-many-instance-attri
             values = entry.get("downsampled_values")
             peak = entry.get("peak", 0)
             if values and peak > 0:
-                data.append({
-                    "metric": entry.get("metric", ""),
-                    "unit": entry.get("unit", ""),
-                    "peak": peak,
-                    "average": entry.get("average", 0.0),
-                    "values": values,
-                })
+                data.append(
+                    {
+                        "metric": entry.get("metric", ""),
+                        "unit": entry.get("unit", ""),
+                        "peak": peak,
+                        "average": entry.get("average", 0.0),
+                        "values": values,
+                    }
+                )
         return data
 
     @staticmethod

@@ -34,9 +34,7 @@ from mongo_x_ray_ftdc.framework import Framework as FTDCAnalysisFramework
 
 # FTDC samples: a colon-separated list (the integration-test target passes the
 # mongos and mongod diagnostic files), or the bundled sample by default.
-FTDC_SAMPLES = os.environ.get("FTDC_SAMPLE", "metrics.2026-07-29T06-50-11Z-00000").split(
-    os.pathsep
-)
+FTDC_SAMPLES = os.environ.get("FTDC_SAMPLE", "metrics.2026-07-29T06-50-11Z-00000").split(os.pathsep)
 
 # The baseline analysis renders "1.1 Workload" plus either the mongod layout
 # (with "Ops and Latencies") or the mongos layout (where it is skipped and

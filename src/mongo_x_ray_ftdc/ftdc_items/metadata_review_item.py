@@ -77,8 +77,7 @@ class MetadataReviewItem(BaseItem):
         for idx, (tab_key, label, _dotted_path) in enumerate(_METADATA_TABS):
             active_class = " active" if idx == 0 else ""
             output.write(
-                f'<button class="metadata-tab-btn{active_class}"'
-                f' data-tab="{tab_id}-{tab_key}">{label}</button>\n'
+                f'<button class="metadata-tab-btn{active_class}" data-tab="{tab_id}-{tab_key}">{label}</button>\n'
             )
         output.write("</div>\n")
 
