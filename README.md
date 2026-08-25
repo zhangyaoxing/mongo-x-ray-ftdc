@@ -18,6 +18,14 @@ x-ray ftdc /var/lib/mongo/diagnostic.data 2026-06-17T08:00:00Z 2026-06-17T10:00:
 x-ray ftdc --discover /data/
 ```
 
+## Compatibility
+
+Supports MongoDB 5.0 and above on all topologies:
+
+| Replica Set | Sharded Cluster | Standalone |
+| :---------: | :-------------: | :--------: |
+| ✅ | ✅ | ✅ |
+
 ## Parameters
 
 ```bash
