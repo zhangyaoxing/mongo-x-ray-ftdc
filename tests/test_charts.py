@@ -36,6 +36,7 @@ def test_chart_uses_high_contrast_palette(tmp_path):
     style = ElementTree.parse(chart).getroot().find("{http://www.w3.org/2000/svg}style")
 
     assert style is not None
+    assert style.text is not None
     assert all(color in style.text for color in ("#0072b2", "#009e73", "#e69f00", "#cc3311", "#667085"))
 
 
@@ -196,12 +197,14 @@ def test_bar_chart_uses_value_colors(tmp_path):
 
 def test_bar_chart_rejects_invalid_image_format(tmp_path):
     with pytest.raises(ValueError, match="unsupported image format"):
-        write_bar_chart(tmp_path, "Bad format", [], image_format="jpg")
+        # Intentionally invalid value to exercise the validation path.
+        write_bar_chart(tmp_path, "Bad format", [], image_format="jpg")  # type: ignore[arg-type]
 
 
 def test_chart_rejects_invalid_chart_type(tmp_path):
     with pytest.raises(ValueError, match="unsupported chart type"):
-        write_bar_chart(tmp_path, "Bad chart", [], chart_type="pie")
+        # Intentionally invalid value to exercise the validation path.
+        write_bar_chart(tmp_path, "Bad chart", [], chart_type="pie")  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize(("width", "height"), [(80, 150), (450, 32)])

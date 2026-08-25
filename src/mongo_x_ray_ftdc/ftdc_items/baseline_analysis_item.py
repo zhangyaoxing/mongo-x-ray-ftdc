@@ -9,7 +9,7 @@ from math import ceil, isfinite
 from pathlib import Path
 from posixpath import normpath
 from statistics import fmean
-from typing import Literal, Optional, TypedDict
+from typing import Any, Literal, Optional, TypedDict
 
 from mongo_x_ray.utils import env, yellow
 from pyftdc import FTDCError, FTDCReader
@@ -113,7 +113,7 @@ class BaselineAnalysisItem(BaseItem):
         self._disk_queue_metrics: dict[str, str] = {}
         self._mount_metrics: dict[str, dict[str, str]] = {}
         self._rs_member_metrics: dict[str, dict[str, str]] = {}
-        self._results: dict[str, list[dict]] = {}
+        self._results: dict[str, list[Any]] = {}
         self._ai_results: dict[str, str] = {}
         self._capture_start: Optional[datetime] = None
         self._capture_end: Optional[datetime] = None
