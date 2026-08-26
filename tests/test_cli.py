@@ -98,7 +98,7 @@ def test_discover_paths_returns_all_matches():
         assert result[1] == dir_b
 
 
-@pytest.mark.parametrize("command", ["ingest", "unknown"])
+@pytest.mark.parametrize("command", ["unknown", "definitely-not-a-command"])
 def test_removed_commands_are_rejected(command):
     with pytest.raises(SystemExit):
         setup_parser().parse_args([command])
