@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
+
 from mongo_x_ray.__main__ import setup_parser
 from mongo_x_ray.plugin import discover_paths
 from mongo_x_ray.plugins import discover_plugins

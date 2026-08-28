@@ -11,9 +11,9 @@ from posixpath import normpath
 from statistics import fmean
 from typing import Any, Literal, Optional, TypedDict
 
-from mongo_x_ray.utils import env, yellow
 from pyftdc import FTDCError, FTDCReader
 
+from mongo_x_ray.utils import env, yellow
 from mongo_x_ray_ftdc.charts import (
     DEFAULT_CHART_HEIGHT,
     DEFAULT_CHART_WIDTH,
@@ -501,7 +501,6 @@ class BaselineAnalysisItem(BaseItem):
             return
         try:
             from mongo_x_ray.ai_client import get_client
-
             from mongo_x_ray_ftdc.ai import analyze_ftdc_section
         except ImportError:
             return

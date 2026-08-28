@@ -7,6 +7,7 @@ from typing import Optional, TextIO
 
 from bson import decode_file_iter
 from bson.errors import InvalidBSON
+
 from mongo_x_ray.framework import BaseFramework
 from mongo_x_ray.utils import bold, cyan, green, load_classes, yellow
 

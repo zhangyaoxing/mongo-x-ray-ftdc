@@ -22,7 +22,6 @@ import pytest
 pytest.importorskip("playwright")
 
 from mongo_x_ray.utils import load_config
-
 from mongo_x_ray_ftdc.framework import Framework as FTDCAnalysisFramework
 
 # Playwright fixtures are named after their injected value (browser, page,

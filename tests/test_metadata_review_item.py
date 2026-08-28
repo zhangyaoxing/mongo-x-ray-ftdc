@@ -1,9 +1,9 @@
 from html import unescape
 from io import StringIO
 
-from mongo_x_ray.utils import load_classes
 from pyftdc import FTDCError
 
+from mongo_x_ray.utils import load_classes
 from mongo_x_ray_ftdc.ftdc_items.metadata_review_item import (
     _METADATA_TABS,
     MetadataReviewItem,
