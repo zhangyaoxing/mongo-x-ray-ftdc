@@ -9,4 +9,3 @@ THIS MATERIAL IS PROVIDED "AS IS" WITHOUT WARRANTY OR LIABILITY.
 
 Extension points for FTDC analysis items.
 """
-
