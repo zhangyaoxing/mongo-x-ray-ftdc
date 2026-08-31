@@ -1,6 +1,7 @@
 # mongo-x-ray-ftdc
 
 [![CI](https://github.com/zhangyaoxing/mongo-x-ray-ftdc/actions/workflows/ci.yml/badge.svg)](https://github.com/zhangyaoxing/mongo-x-ray-ftdc/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/mongo-x-ray-ftdc.svg)](https://pypi.org/project/mongo-x-ray-ftdc/)
 
 FTDC (Full Time Diagnostic Data Capture) analysis plugin for [x-ray](https://github.com/mongodb-ps/ce-mongo-x-ray).
 
