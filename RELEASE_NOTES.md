@@ -1,5 +1,10 @@
 # mongo-x-ray-ftdc — Release Notes
 
+## 2.1.2
+
+### Dependencies
+- Requires `pymongoftdc>=0.1.2`. The parser API the plugin uses (`FTDCReader`, `FTDCError`, `DataPoint`) is unchanged, and the unit tests run against 0.1.2.
+
 ## 2.1.1
 
 Dependency and automation release — the plugin's own behaviour is unchanged.
