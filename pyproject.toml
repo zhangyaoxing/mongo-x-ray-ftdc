@@ -8,11 +8,7 @@ version = "2.1.2"
 description = "FTDC analysis plugin for x-ray"
 readme = "README.md"
 requires-python = ">=3.10,<4"
-dependencies = [
-  "mongo-x-ray>=2.0.0",
-  "pymongoftdc>=0.1.1",
-  "Pillow>=10.0.0",
-]
+dependencies = ["mongo-x-ray>=2.0.0", "pymongoftdc>=0.1.2", "Pillow>=10.0.0"]
 
 [project.entry-points."mongo_x_ray.plugins"]
 ftdc = "mongo_x_ray_ftdc.plugin:FtdcPlugin"
@@ -47,7 +43,14 @@ select = ["E", "F", "I"]
 ignore = ["E501"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["mongo_x_ray", "mongo_x_ray_ftdc", "mongo_x_ray_gmd", "mongo_x_ray_hc", "mongo_x_ray_log", "mongo_x_ray_risk"]
+known-first-party = [
+  "mongo_x_ray",
+  "mongo_x_ray_ftdc",
+  "mongo_x_ray_gmd",
+  "mongo_x_ray_hc",
+  "mongo_x_ray_log",
+  "mongo_x_ray_risk",
+]
 
 
 [tool.pyright]
@@ -55,7 +58,4 @@ pythonVersion = "3.10"
 venvPath = "../ce-mongo-x-ray"
 venv = ".venv"
 typeCheckingMode = "basic"
-extraPaths = [
-  "src",
-  "../ce-mongo-x-ray/src",
-]
+extraPaths = ["src", "../ce-mongo-x-ray/src"]
