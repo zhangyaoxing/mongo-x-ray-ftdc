@@ -83,6 +83,11 @@ Ops and Latencies, Performance). The analysis appears as a brief 2-3 sentence
 assessment at the end of each section, flagging potential issues or confirming
 normal operation.
 
+The analysis runs whenever an API key is configured, in any `ENV` — including
+`ENV=development`. (It used to be skipped in development mode, which made the
+feature look broken when debugging.) The repository's `.env` file is read
+automatically, so a key set there is enough.
+
 **Configuration** — set the following environment variables:
 
 | Variable          | Required | Default        | Description                             |
@@ -92,6 +97,19 @@ normal operation.
 | `AI_MODEL`        |    No    | `gpt-4o`       | Model name to use                       |
 
 If `OPENAI_API_KEY` is not set, AI analysis is silently skipped.
+
+To turn it off even when a key is configured (for example before sharing a
+report from a machine that happens to have one), disable it in the config file:
+
+```json
+{
+    "ftdc": {
+        "item_config": {
+            "BaselineAnalysisItem": { "ai_analysis": false }
+        }
+    }
+}
+```
 
 **Example** `.env` file:
 

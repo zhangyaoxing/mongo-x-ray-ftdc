@@ -904,3 +904,58 @@ def test_collect_all_section_data_combines_sections():
     assert len(data) == 2
     assert data[0]["metric"] == "a"
     assert data[1]["metric"] == "b"
+
+
+def _ai_item(tmp_path, monkeypatch, *, client, config=None):
+    """A BaselineAnalysisItem whose AI section runs with a fake client."""
+    monkeypatch.delenv("PYTEST_CURRENT_TEST", raising=False)
+    monkeypatch.setattr("mongo_x_ray.ai_client.get_client", lambda: client)
+    item = BaselineAnalysisItem(str(tmp_path), config or {})
+    item._results = {"Workload": [object()], "Ops and Latencies": [object()], "Performance": [object()]}
+    monkeypatch.setattr(item, "_collect_section_data", lambda category: [{"metric": category}])
+    monkeypatch.setattr(item, "_collect_all_section_data", lambda: [{"metric": "all"}])
+    return item
+
+
+def test_ai_analysis_runs_when_a_client_is_configured(tmp_path, monkeypatch):
+    calls = []
+    monkeypatch.setattr(
+        "mongo_x_ray_ftdc.ai.analyze_ftdc_section",
+        lambda title, metrics: calls.append(title) or f"AI text for {title}",
+    )
+    monkeypatch.setattr("mongo_x_ray_ftdc.ai.analyze_ftdc_overview", lambda metrics: "AI overview")
+
+    item = _ai_item(tmp_path, monkeypatch, client=(object(), "test-model"))
+    item._run_ai_analysis()
+
+    assert calls == ["1.1 Workload", "1.2 Ops and Latencies", "1.3 Performance"]
+    assert item._ai_results["Workload"] == "AI text for 1.1 Workload"
+    assert item._ai_results["_overview"] == "AI overview"
+
+
+def test_ai_analysis_can_be_disabled_with_the_item_config(tmp_path, monkeypatch):
+    def fail():
+        raise AssertionError("the AI client must not be used when ai_analysis is false")
+
+    monkeypatch.delenv("PYTEST_CURRENT_TEST", raising=False)
+    monkeypatch.setattr("mongo_x_ray.ai_client.get_client", fail)
+
+    item = BaselineAnalysisItem(str(tmp_path), {"ai_analysis": False})
+    item._results = {"Workload": [object()]}
+    item._run_ai_analysis()
+
+    assert item._ai_results == {}
+
+
+def test_ai_analysis_is_skipped_without_an_api_key(tmp_path, monkeypatch):
+    calls = []
+    monkeypatch.setattr(
+        "mongo_x_ray_ftdc.ai.analyze_ftdc_section",
+        lambda title, metrics: calls.append(title) or "unused",
+    )
+
+    item = _ai_item(tmp_path, monkeypatch, client=(None, "gpt-4o"))
+    item._run_ai_analysis()
+
+    assert calls == []
+    assert item._ai_results == {}

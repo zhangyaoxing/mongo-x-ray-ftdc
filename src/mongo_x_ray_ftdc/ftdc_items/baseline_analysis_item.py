@@ -23,7 +23,7 @@ from typing import Any, Literal, Optional, TypedDict
 
 from pyftdc import FTDCError, FTDCReader
 
-from mongo_x_ray.utils import env, yellow
+from mongo_x_ray.utils import yellow
 from mongo_x_ray_ftdc.charts import (
     DEFAULT_CHART_HEIGHT,
     DEFAULT_CHART_WIDTH,
@@ -505,21 +505,32 @@ class BaselineAnalysisItem(BaseItem):
         self._run_ai_analysis()
 
     def _run_ai_analysis(self) -> None:
-        """Run AI analysis for each section, storing results in ``self._ai_results``."""
-        if env == "development" or os.environ.get("PYTEST_CURRENT_TEST"):
-            self._logger.info("AI analysis skipped in development mode")
+        """Run AI analysis for each section, storing results in ``self._ai_results``.
+
+        Enabled whenever an API key is configured; ``ai_analysis: false`` in the
+        item config turns it off, which is the switch to use before sending a
+        report from a machine that has a key in .env by accident. It used to be
+        skipped whenever ``ENV=development``, which silently disabled the feature
+        in the very environment it is developed and reviewed in.
+        """
+        if os.environ.get("PYTEST_CURRENT_TEST"):
+            return
+        if self.config.get("ai_analysis") is False:
+            self._logger.info("AI analysis disabled by config (item_config.ai_analysis = false)")
             return
         try:
             from mongo_x_ray.ai_client import get_client
             from mongo_x_ray_ftdc.ai import analyze_ftdc_section
         except ImportError:
+            self._logger.info("AI analysis skipped: the `openai` package is not installed")
             return
 
-        client, _ = get_client()
+        client, model = get_client()
         if client is None:
+            self._logger.info("AI analysis skipped: OPENAI_API_KEY is not set")
             return
 
-        self._logger.info(yellow("Starting AI analysis — this may take a while..."))
+        self._logger.info(yellow(f"Starting AI analysis with {model} — this may take a while..."))
 
         member_role = self._member_role
         section_map = {
