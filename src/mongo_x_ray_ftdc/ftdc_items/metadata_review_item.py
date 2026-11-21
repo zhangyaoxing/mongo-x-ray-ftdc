@@ -29,16 +29,6 @@ _METADATA_TABS: list[tuple[str, str, str]] = [
     ("raw", "Raw Metadata", ""),
 ]
 
-_STYLE = """<style>
-.metadata-tabs{border:1px solid var(--borderColor-default,#d0d7de);border-radius:6px;overflow:hidden;margin:16px 0}
-.metadata-tab-bar{display:flex;flex-wrap:wrap;background:var(--bgColor-muted,#f6f8fa);border-bottom:1px solid var(--borderColor-default,#d0d7de)}
-.metadata-tab-btn{padding:8px 16px;font-size:13px;cursor:pointer;border:none;background:none;color:var(--fgColor-muted,#656d76);border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
-.metadata-tab-btn:hover{color:var(--fgColor-default,#1f2328)}
-.metadata-tab-btn.active{color:var(--fgColor-accent,#0969da);border-bottom-color:var(--fgColor-accent,#0969da);font-weight:600}
-.metadata-tab-pane{display:none;padding:16px}
-.metadata-tab-pane.active{display:block}
-.metadata-tab-pane pre{margin:0}
-</style>"""
 
 _SCRIPT = """<script>
 (function(){var t=document.currentScript.previousElementSibling.querySelectorAll(".metadata-tab-btn"),e=document.currentScript.previousElementSibling.querySelectorAll(".metadata-tab-pane");t.forEach(function(n){n.addEventListener("click",function(){var i=this.dataset.tab;t.forEach(function(t){t.classList.toggle("active",t===n)}),e.forEach(function(t){t.classList.toggle("active",t.id===i)})})})})();
@@ -81,7 +71,6 @@ class MetadataReviewItem(BaseItem):
             return
 
         tab_id = "metadata-tabs"
-        output.write(_STYLE)
         output.write(f'<div class="metadata-tabs" id="{tab_id}">\n')
         output.write('<div class="metadata-tab-bar">\n')
         for idx, (tab_key, label, _dotted_path) in enumerate(_METADATA_TABS):
