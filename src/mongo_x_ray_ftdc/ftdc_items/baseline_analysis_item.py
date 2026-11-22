@@ -772,19 +772,11 @@ class BaselineAnalysisItem(BaseItem):
                     caption=None,
                     output_folder=str(self.output_folder),
                     show_thresholds=section == "Performance",
+                    comments=self._ai_results.get(section),
                 )
             )
-            ai_text = self._ai_results.get(section)
-            if ai_text:
-                output.write("\n> **🤖 AI Analysis**\n>\n")
-                for line in ai_text.strip().split("\n"):
-                    output.write(f"> {line}\n")
-                output.write("\n")
 
-        overview = self._ai_results.get("_overview")
+        overview = (self._ai_results.get("_overview") or "").strip()
         if overview:
             output.write(f"### {section_number}.{subsection_number + 1} Cross-Section Overview\n\n")
-            output.write("> **🤖 AI Overview**\n>\n")
-            for line in overview.strip().split("\n"):
-                output.write(f"> {line}\n")
-            output.write("\n")
+            output.write(overview.strip() + "\n\n")

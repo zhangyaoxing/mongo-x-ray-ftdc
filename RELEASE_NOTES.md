@@ -1,5 +1,12 @@
 # mongo-x-ray-ftdc — Release Notes
 
+## 2.1.4
+
+### Report format
+- The commentary on the Workload, Ops and Latencies, and Performance tables is now a final **Comments** row of the table itself. The first column holds the label `Comments` and the remaining columns are merged into one cell holding the text. Previously it was a separate block below each table.
+- Tables that have comments are written as HTML tables (Markdown tables cannot merge cells); tables without comments are unchanged.
+- The "AI Analysis" and "AI Overview" labels are removed from the report. The Cross-Section Overview section keeps its heading, with the text shown as plain content.
+
 ## 2.1.2
 
 ### Dependencies

@@ -11,9 +11,12 @@ Parser for FTDC baseline analysis results.
 """
 
 import base64
+import re
 from html import escape
 from pathlib import Path
 from typing import Any, Optional
+
+import markdown
 
 from mongo_x_ray_ftdc.charts import DEFAULT_CHART_HEIGHT, DEFAULT_CHART_WIDTH
 from mongo_x_ray_ftdc.parsers.base_parser import BaseParser
@@ -48,8 +51,78 @@ def _thresholds(item: dict) -> str:
     return f"{round(warning or 0, 2)} / {round(critical or 0, 2)}"
 
 
+_MD_IMAGE_RE = re.compile(r"^!\[(.*)\]\((.*)\)$", re.DOTALL)
+
+
+def _html_cell(value: Any) -> str:
+    """Render a table cell as HTML: images pass through, other text is escaped."""
+    text = str(value)
+    if text.startswith("<img"):
+        return text
+    match = _MD_IMAGE_RE.match(text)
+    if match:
+        return f'<img src="{escape(match.group(2), quote=True)}" alt="{escape(match.group(1), quote=True)}">'
+    return escape(text)
+
+
+def _comment_html(text: str) -> str:
+    """Render the comment text (markdown) to HTML without blank lines.
+
+    Blank lines would end the raw HTML block when the report is rendered, so
+    they are removed from the generated markup.
+    """
+    html = markdown.markdown(text.strip(), extensions=["fenced_code"])
+    return "\n".join(line for line in html.splitlines() if line.strip())
+
+
 class BaselineAnalysisParser(BaseParser):
     """Convert baseline analysis metric summaries to a report table."""
+
+    def format_table(self, item, i) -> str:
+        """Format a table; a ``comments`` entry becomes a final merged row.
+
+        Markdown pipe tables cannot merge cells, so a table with comments is
+        written as an HTML table whose last row has the label ``Comments`` in
+        the first column and the comment text spanning the remaining columns.
+        """
+        comments = (item.get("comments") or "").strip()
+        rows = item.get("rows")
+        if not comments:
+            return super().format_table(item, i)
+        if not rows:
+            return super().format_table(item, i) + "\n" + _comment_html(comments) + "\n"
+
+        header = item.get("header", [])
+        caption = item.get("caption")
+        output = f"#### {caption}\n\n" if caption else ""
+        output += '<table style="width:100%">\n<colgroup>\n'
+        for h in header:
+            width = h.get("width", "") if isinstance(h, dict) else ""
+            if width.endswith("px"):
+                output += f'<col style="width:{width}" width="{width[:-2]}">\n'
+            elif width and width != "*":
+                output += f'<col style="width:{width}">\n'
+            else:
+                output += "<col>\n"
+        output += "</colgroup>\n<thead>\n<tr>\n"
+        for h in header:
+            text = h["text"] if isinstance(h, dict) else h
+            output += f'<th style="text-align: center;">{escape(str(text))}</th>\n'
+        output += "</tr>\n</thead>\n<tbody>\n"
+        for row in rows:
+            output += "<tr>\n"
+            for cell in row:
+                output += f'<td style="text-align: center;">{_html_cell(cell)}</td>\n'
+            output += "</tr>\n"
+        span = max(len(header) - 1, 1)
+        output += (
+            "<tr>\n"
+            '<td style="text-align: center;"><strong>Comments</strong></td>\n'
+            f'<td colspan="{span}" style="text-align: left;">\n{_comment_html(comments)}\n</td>\n'
+            "</tr>\n"
+        )
+        output += "</tbody>\n</table>\n"
+        return output
 
     def parse(self, data: Any, **kwargs) -> list:
         output_folder = kwargs.get("output_folder")
@@ -106,11 +179,13 @@ class BaselineAnalysisParser(BaseParser):
         if show_thresholds:
             header.append({"text": "Warning / Critical Threshold", "sortable": False, "width": "150px"})
         header.append({"text": "Chart", "sortable": False, "width": "500px"})
-        return [
-            {
-                "type": "table",
-                "caption": kwargs.get("caption", "Baseline Analysis"),
-                "header": header,
-                "rows": rows,
-            }
-        ]
+        table = {
+            "type": "table",
+            "caption": kwargs.get("caption", "Baseline Analysis"),
+            "header": header,
+            "rows": rows,
+        }
+        comments = (kwargs.get("comments") or "").strip()
+        if comments:
+            table["comments"] = comments
+        return [table]
