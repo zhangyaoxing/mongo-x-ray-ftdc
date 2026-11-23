@@ -23,7 +23,7 @@ from typing import Any, Literal, Optional, TypedDict
 
 from pyftdc import FTDCError, FTDCReader
 
-from mongo_x_ray.shared import AI_ICON
+from mongo_x_ray.shared import ai_note_markdown as render_ai_note
 from mongo_x_ray.utils import yellow
 from mongo_x_ray_ftdc.charts import (
     DEFAULT_CHART_HEIGHT,
@@ -792,15 +792,13 @@ class BaselineAnalysisItem(BaseItem):
             )
             ai_text = self._ai_results.get(section)
             if ai_text:
-                output.write(f'\n> <span class="ai-label">{AI_ICON} AI Analysis</span>\n>\n')
-                for line in ai_text.strip().split("\n"):
-                    output.write(f"> {line}\n")
-                output.write("\n")
+                note = render_ai_note(ai_text)
+                if note:
+                    output.write("\n" + note)
 
         overview = self._ai_results.get("_overview")
         if overview:
             output.write(f"### {section_number}.{subsection_number + 1} Cross-Section Overview\n\n")
-            output.write(f'> <span class="ai-label">{AI_ICON} AI Overview</span>\n>\n')
-            for line in overview.strip().split("\n"):
-                output.write(f"> {line}\n")
-            output.write("\n")
+            note = render_ai_note(overview, title="AI Overview")
+            if note:
+                output.write(note)

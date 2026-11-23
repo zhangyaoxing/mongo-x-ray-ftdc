@@ -836,7 +836,9 @@ def test_ai_results_rendered_in_markdown(tmp_path):
     item.review_results_markdown(output, section_number=1)
     text = output.getvalue()
 
-    assert '<span class="ai-label">' in text and "AI Analysis" in text
+    assert 'class="ai-label"' in text and "AI Analysis" in text
+    assert 'class="ai-copy-btn"' in text
+    assert 'data-ai-note="The workload shows a diurnal pattern."' in text
     assert "The workload shows a diurnal pattern." in text
 
 
