@@ -8,7 +8,7 @@ version = "2.1.3"
 description = "FTDC analysis plugin for x-ray"
 readme = "README.md"
 requires-python = ">=3.10,<4"
-dependencies = ["mongo-x-ray>=2.0.0", "pymongoftdc>=0.1.2", "Pillow>=10.0.0", "Markdown>=3.4"]
+dependencies = ["mongo-x-ray>=2.1.3", "pymongoftdc>=0.1.2", "Pillow>=10.0.0", "Markdown>=3.4"]
 
 [project.entry-points."mongo_x_ray.plugins"]
 ftdc = "mongo_x_ray_ftdc.plugin:FtdcPlugin"
