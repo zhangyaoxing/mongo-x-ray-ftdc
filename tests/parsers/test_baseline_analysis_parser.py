@@ -203,3 +203,46 @@ def test_parse_uses_line_chart_alt_text():
     )
 
     assert parsed[0]["rows"][0][3] == ("![CPU user line chart](charts/ftdc-baseline-analysis-cpu-user.svg)")
+
+
+def test_comments_become_merged_final_row():
+    data = [
+        {
+            "metric": "CPU user",
+            "peak": 12.345,
+            "average": 4.567,
+            "unit": "%",
+            "chart": "charts/cpu.svg",
+        }
+    ]
+    text = BaselineAnalysisParser().markdown(data, comments="First paragraph.\n\n- point one\n- point two")
+
+    assert "Comments" in text
+    # The label keeps the LeafyGreen Sparkle icon and the copy button.
+    assert 'class="ai-label"' in text
+    assert 'class="ai-copy-btn"' in text
+    assert 'data-ai-note="First paragraph.&#10;&#10;- point one' in text
+    # 4 columns: the label takes one, the comment spans the other three.
+    assert 'colspan="3"' in text
+    assert "<li>point one</li>" in text
+    # Blank lines would terminate the raw HTML block in the rendered report.
+    assert "\n\n" not in text.split("<table", 1)[1].split("</table>", 1)[0]
+    assert text.index("CPU user") < text.index("Comments")
+
+
+def test_no_comments_keeps_markdown_table():
+    data = [{"metric": "CPU user", "peak": 1.0, "average": 1.0, "unit": "%", "chart": "charts/cpu.svg"}]
+    text = BaselineAnalysisParser().markdown(data)
+
+    assert "Comments" not in text
+    assert "<table" not in text
+
+
+def test_blank_or_missing_comments_add_no_row():
+    data = [{"metric": "CPU user", "peak": 1.0, "average": 1.0, "unit": "%", "chart": "charts/cpu.svg"}]
+    plain = BaselineAnalysisParser().markdown(data)
+
+    for comments in (None, "", "   \n\n  "):
+        text = BaselineAnalysisParser().markdown(data, comments=comments)
+        assert text == plain
+        assert "Comments" not in text

@@ -820,7 +820,7 @@ def test_collect_section_data_filters_entries_without_downsampled_values():
     assert data[0]["values"] == [1, 2, 3]
 
 
-def test_ai_results_rendered_in_markdown(tmp_path):
+def test_comments_row_rendered_in_table(tmp_path):
     item = BaselineAnalysisItem(str(tmp_path), {}, total_ingest_files=1)
     item._ai_results = {"Workload": "The workload shows a diurnal pattern."}
     item._results = {
@@ -836,13 +836,13 @@ def test_ai_results_rendered_in_markdown(tmp_path):
     item.review_results_markdown(output, section_number=1)
     text = output.getvalue()
 
-    assert 'class="ai-label"' in text and "AI Analysis" in text
+    assert '<span class="ai-label"' in text
     assert 'class="ai-copy-btn"' in text
     assert 'data-ai-note="The workload shows a diurnal pattern."' in text
     assert "The workload shows a diurnal pattern." in text
 
 
-def test_no_ai_section_when_ai_results_empty(tmp_path):
+def test_no_comments_row_when_no_comments(tmp_path):
     item = BaselineAnalysisItem(str(tmp_path), {}, total_ingest_files=1)
     item._ai_results = {}
     item._results = {
@@ -858,10 +858,10 @@ def test_no_ai_section_when_ai_results_empty(tmp_path):
     item.review_results_markdown(output, section_number=1)
     text = output.getvalue()
 
-    assert "AI Analysis" not in text
+    assert "Comments" not in text
 
 
-def test_ai_overview_rendered_in_markdown(tmp_path):
+def test_overview_rendered_in_markdown(tmp_path):
     item = BaselineAnalysisItem(str(tmp_path), {}, total_ingest_files=1)
     item._ai_results = {"_overview": "No cross-section issues detected."}
     item._results = {
@@ -878,7 +878,7 @@ def test_ai_overview_rendered_in_markdown(tmp_path):
     text = output.getvalue()
 
     assert "Cross-Section Overview" in text
-    assert "AI Overview" in text
+    assert "AI Overview" not in text
     assert "No cross-section issues detected." in text
 
 
@@ -963,7 +963,7 @@ def test_ai_analysis_is_skipped_without_an_api_key(tmp_path, monkeypatch):
     assert item._ai_results == {}
 
 
-def test_ai_notes_use_the_leafygreen_sparkle_not_an_emoji(tmp_path):
+def test_comments_row_uses_the_leafygreen_sparkle_not_an_emoji(tmp_path):
     item = BaselineAnalysisItem(str(tmp_path), {})
     timestamp = datetime(2026, 1, 1, tzinfo=timezone.utc)
     item._series = {
@@ -977,8 +977,8 @@ def test_ai_notes_use_the_leafygreen_sparkle_not_an_emoji(tmp_path):
     item.review_results_markdown(output)
 
     report = output.getvalue()
-    assert report.count('class="ai-label"') == 2  # one per section note, one overview
-    assert "AI Analysis" in report
-    assert "AI Overview" in report
+    assert report.count('class="ai-label"') == 1  # the Workload comments row
+    assert "AI Analysis" not in report
     assert 'class="ai-icon"' in report
+    assert "Everything is steady." in report
     assert "🤖" not in report

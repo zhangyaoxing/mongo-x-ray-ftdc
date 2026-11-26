@@ -1,5 +1,19 @@
 # mongo-x-ray-ftdc — Release Notes
 
+## 2.1.3
+
+### Report format
+- The commentary on the Workload, Ops and Latencies, and Performance tables is now a final **Comments** row of the table itself. The first column shows the LeafyGreen Sparkle label with its copy button and the remaining columns are merged into one cell holding the text. Previously it was a separate block below each table.
+- Tables that have comments are written as HTML tables (Markdown tables cannot merge cells); tables without comments are unchanged.
+- The "AI Analysis" and "AI Overview" labels are removed from the report. The Cross-Section Overview section keeps its heading, with the text shown as plain content.
+
+### AI analysis
+- The AI analysis runs whenever an API key is configured, including in development mode; `"ai_analysis": false` in the item config disables it.
+- Section commentary keeps the LeafyGreen Sparkle icon and its one-click copy button.
+
+### Report template
+- Reports use the MongoDB-styled (LeafyGreen) template with tabs and icons.
+
 ## 2.1.2
 
 ### Dependencies
