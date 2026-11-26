@@ -1,5 +1,12 @@
 # mongo-x-ray-ftdc — Release Notes
 
+## 2.1.4
+
+Version alignment with x-ray 2.1.4 — the first published build of the 2.1.3 changes.
+
+`mongo-x-ray==2.1.3` reached PyPI without the MongoDB theme stylesheet, so its reports rendered unstyled and the 2.1.3 plugin packages were never published; 2.1.4 fixes the core packaging and these plugins require `mongo-x-ray>=2.1.4`.
+
+
 ## 2.1.3
 
 ### Report format
@@ -15,7 +22,7 @@
 - Reports use the MongoDB-styled (LeafyGreen) template with tabs and icons: dark report, SideNav outline, LeafyGreen Table, Tabs, Button and Typography components, icons inlined (no remote stylesheet or webfont).
 - The outline has a proper header row (the collapse toggle no longer covers the title) and clicking an entry lands the heading at the top and highlights that entry.
 - Chart blocks get the shared spacing, so charts and the notes below them no longer touch.
-- Requires `mongo-x-ray>=2.1.3` for the shared AI/badge helpers and the report stylesheets.
+- Requires `mongo-x-ray>=2.1.4` for the shared AI/badge helpers and the report stylesheets.
 
 ## 2.1.2
 
